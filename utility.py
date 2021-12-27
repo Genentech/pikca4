@@ -73,10 +73,12 @@ def tree_generator(parseTree, start):
     if len(get_levels(parseTree, 1)) == 0:
         return
 
+    rankInSibling = 0
     for child in get_levels(parseTree, 1):
-        # print(child.split(' ')[0])
+        rankInSibling += 1
+        n = len(get_levels(parseTree, 1))
         newNode = Node(name=child.split(
-            ' ')[0], children=[], parent=start, level=start.level+1)
+            ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling)
 
         start.children.append(newNode)
 
