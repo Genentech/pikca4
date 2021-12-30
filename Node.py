@@ -37,7 +37,7 @@ class Pic:
 class Node:
     def __init__(self, name='placeholder',
                  parent=None, children=[], child_rel=None, sibling=0,
-                 olderSibling=None, inp=None, outp=None, level=None):
+                 olderSibling=None, inp=None, outp=None, level=None, ifend=False):
         self.name = name
         self.parent = parent
         self.children = children
@@ -47,6 +47,7 @@ class Node:
         self.level = level
         self.sibling = sibling
         self.olderSibling = olderSibling
+        self.ifend = ifend
 
     def __repr__(self):
         return self.name
@@ -65,14 +66,21 @@ class Node:
             self.box = 'B' + str(r)
             pik += 'L' + str(r) + ': ' + 'line linerad\n'
         else:
+            # print(self.name)
+            # print(self.sibling)
+            # print(self.children)
+            # print(self.olderSibling)
+            # print(self.children[0].sibling)
             pik += 'B' + str(r) + ': ' + 'box \"' + self.name + \
                 '\" fit at $h below ' + self.olderSibling.box + '\n'
             self.box = 'B' + str(r)
             pik += 'arrow from ' + self.inp + ' to ' + self.box + '.w\n'
             pik += 'L' + str(r) + ': ' + \
                 'line linerad from ' + self.box + '.e\n'
-
-        self.outp = 'L' + str(r)
+        if self.ifend:
+            pik += 'arrow right linerad\ncircle radius 10%\n'
+        else:
+            self.outp = 'L' + str(r)
         return pik
 
 
@@ -124,8 +132,10 @@ class starNode(Node):  # DONE Zero or More
         pik += 'L' + str(r) + ': ' + 'line from A' + \
             str(r+1) + '.e right linerad\n'
 
-        # pik += 'A' + rand()
-        self.outp = 'L' + str(r)
+        if self.ifend:
+            pik += 'arrow right linerad\ncircle radius 10%\n'
+        else:
+            self.outp = 'L' + str(r)
         return pik
 
 # A0: arrow right linerad*2
@@ -149,7 +159,10 @@ class plusNode(Node):  # one or more
         pik += 'A' + str(r+2) + ': ' + 'arrow from A' + str(r+1) + \
             '.end left last box.width/2 + linerad then up linerad*1.25 then right to B' + \
             str(r) + '.w\n'
-        self.outp = 'L' + str(r)
+        if self.ifend:
+            pik += 'arrow right linerad\ncircle radius 10%\n'
+        else:
+            self.outp = 'L' + str(r)
         return pik
 
 
@@ -179,7 +192,10 @@ class questionMarkNode(Node):  # DONE zero or one
         pik += 'A' + str(r) + ':' + ' arrow from A' + \
             str(r+3) + '.e right to A' + str(r+2) + '.end\n'
         pik += 'L' + str(r) + ': ' + 'line linerad\n'
-        self.outp = 'L' + str(r)
+        if self.ifend:
+            pik += 'arrow right linerad\ncircle radius 10%\n'
+        else:
+            self.outp = 'L' + str(r)
         return pik
 
 # C1:  circle radius 10%
@@ -205,52 +221,48 @@ class eitherOrNode(Node):
 
 def tree_generator(parseTree, start):
     if len(utility.get_levels(parseTree, 1)) == 0:
+        print(parseTree)
         return
     rankInSibling = 0
     for child in utility.get_levels(parseTree, 1):
         rankInSibling += 1
-        if rankInSibling == 1:
-            newNode = Node(name=child.split(
-                ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling)
-        else:
-            newNode = Node(name=child.split(
-                ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling, olderSibling=brother)
-        start.children.append(newNode)
-        tree_generator(child, start=newNode)
+        if len(utility.get_levels(child, 1)) != 0:
 
-        if len(utility.get_levels(child, 1)) == 0:
-            newEndNode = endNode(name=child.split(
-                ' ')[1], children=[], parent=newNode, level=newNode.level+1)
-            newNode.children.append(newEndNode)
-        brother = newNode
+            if rankInSibling == 1:
+                newNode = Node(name=child.split(
+                    ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling)
+            else:
+                newNode = Node(name=child.split(
+                    ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling, olderSibling=brother)
+            start.children.append(newNode)
+            tree_generator(child, start=newNode)
+
+            brother = newNode
+        else:
+
+            if child.count('?') == 1:
+                newEndNode = questionMarkNode(name=child.split(
+                    ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling, ifend=True)
+                start.children.append(newEndNode)
+            elif child.count('*') == 1:
+                newEndNode = starNode(name=child.split(
+                    ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling, ifend=True)
+                start.children.append(newEndNode)
+            elif child.count('+') == 1:
+                newEndNode = plusNode(name=child.split(
+                    ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling, ifend=True)
+                start.children.append(newEndNode)
+            else:
+                newNode = Node(name=child.split(
+                    ' ')[0], children=[], parent=start, level=start.level+1, sibling=rankInSibling)
+                start.children.append(newNode)
+                newEndNode = Node(name=child.split(
+                    ' ')[1], children=[], parent=newNode, level=newNode.level+1, sibling=rankInSibling, ifend=True)
+                newNode.children.append(newEndNode)
 
 
 if __name__ == '__main__':
-    t = open('./ApplEdible.txt', mode='r', encoding='utf8')
-    treeRaw = t.read()
-    t.close()
-    treeSplit = treeRaw.split('parserRuleSpec')
-    parseRuleList = {}
-    for parseRule in treeSplit:
-        parseRuleName = parseRule.split(' ')[1]
-        parseRuleList[parseRuleName] = utility.cleanParseRule(parseRule)
-
-    venn_op = parseRuleList['prim_expr']
-    # prim_expr = parseRuleList['prim_expr']
-
-    startNode = startNode(name='prim_expr', parent=None, level=1)
-
-    # utility.testIfValidAndReturnLevel('venn_op', venn_op)
-    try:
-        tree_generator(venn_op, start=startNode)
-    except:
-        print('Tree Generation Failed')
-    # tree_generator(venn_op, start=startNode)
-    testpic = Pic(name='test', startNode=startNode)
-    # print(testpic.paint())
-    # utility.visualize_all(parseRuleList)
-
-    pnode = Node(name='parent', outp='S911')
+    pnode = Node(name='parent', outp='C0')
     cnode = starNode(name='child', parent=pnode)
     pnode.children.append(cnode)
     print('starNode')
