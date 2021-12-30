@@ -7,19 +7,17 @@ def rand():
 
 
 class Pic:
-    def __init__(self, name='placeholder', nBox=0,
-                 nArrow=0, nLine=0, startNode=None):
+    def __init__(self, name='placeholder', startNode=None):
         self.name = name
-        self.nBox = nBox
-        self.nArrow = nArrow
-        self.nLine = nLine
+        self.depth = 0
+        self.width = 0
         self.startNode = startNode
         self.__config = '$h = 0.5\nlinerad = 10px\nlinewid *= 0.5\n'
         self.pik = ''
 
     def tree_traverse(self, start, pik):
         # print(start.name, start.olderSibling)
-        print(start)
+        # print(start)
         pik += start.pikchr()
         if len(start.children) != 0:
             for child in start.children:
@@ -89,50 +87,6 @@ class startNode(Node):  # DONE
         return pik
 
 
-class starNode(Node):
-    def pikchr(self):
-        self.inp = self.parent.outp
-        pik = ''
-        r = rand()
-        pik += 'A' + str(r) + ': ' + 'arrow linerad from ' + self.inp + '\n'
-
-        pik += 'B' + str(r) + ': ' + 'box \"' + self.name + \
-            '\" fit with .w at (linewid right of ' + \
-            self.inp + '.e , $h below' + self.inp + ')\n'
-
-        pik += 'L' + str(r) + ': ' + 'line linerad from ' + \
-            'A' + str(r) + '.e right last box.width*2\n'
-
-        # pik += 'A' + rand()
-        self.outp = 'L' + str(r)
-        return pik
-
-# C1:  circle radius 10%
-# A0: arrow right linerad*2
-# SSL: box "sql_stmt_list" fit with .w at (linewid right of C1.e, $h below C1)
-# A1: arrow from C1.e right last box.width*2
-# A2: arrow from A1.c right last box.width/2*1.3 then down even with SSL then to SSL.e
-# A3: line from SSL.w left even with C1.e then up even with A1 then right to A1.c
-
-
-class oneOrZero(Node):
-    def pikchr(self):
-        self.inp = self.parent.outp
-        pik = ''
-        r = rand()
-        pik += 'A' + str(r) + ': ' + 'arrow linerad from ' + self.inp + '\n'
-        pik += 'B' + str(r) + ': ' + 'box \"' + self.name + '\" fit\n'
-        pik += 'L' + str(r) + ': ' + 'line linerad\n'
-        self.outp = 'L' + str(r)
-        return pik
-
-# C1:  circle radius 10%
-# A0:  arrow right $h from C1.e then down 1.25*$h then right $h
-# SSL: box "sql_stmt_list" fit
-# A1:  arrow right $h then up 1.25*$h then right $h
-# A2:  arrow from C1.e right to A1.end
-
-
 class endNode(Node):  # DONE
     def pikchr(self):
         self.inp = self.parent.outp
@@ -145,9 +99,108 @@ class endNode(Node):  # DONE
         return pik
 
 
+class starNode(Node):  # DONE Zero or More
+    def pikchr(self):
+        self.inp = self.parent.outp
+        pik = ''
+        r = rand()
+        pik += 'A' + str(r) + ': ' + 'arrow linerad*2 from ' + \
+            self.inp + '.e\n'
+
+        pik += 'B' + str(r) + ': ' + 'box \"' + self.name + \
+            '\" fit with .c at (linerad right of A' + str(r) + \
+            '.e , $h below A' + str(r) + ')\n'
+
+        pik += 'A' + str(r+1) + ': arrow from A' + str(r) + \
+            '.e right last box.width + 3*linerad\n'
+        pik += 'A' + str(r+2) + ': arrow from A' + str(r+1) + \
+            '.c right last box.width/2 + linerad/2 then down even with B' + \
+            str(r) + ' then to B' + str(r) + '.e\n'
+        pik += 'L' + str(r+2) + ': line from B' + str(r) + \
+            '.w left even with A' + \
+            str(r) + '.c then up even with A' + str(r) + \
+            '.c then right to A' + str(r) + '.e\n'
+
+        pik += 'L' + str(r) + ': ' + 'line from A' + \
+            str(r+1) + '.e right linerad\n'
+
+        # pik += 'A' + rand()
+        self.outp = 'L' + str(r)
+        return pik
+
+# A0: arrow right linerad*2
+# SSL: box "sql_stmt_list" fit with .c at (linewid right of A0.e, $h below A0)
+# A1: arrow from A0.e right last box.width + 2*linerad
+# A2: arrow from A1.c right last box.width/2+linerad/2 then down even with SSL then to SSL.e
+# A3: line from SSL.w left even with A0.c then up even with A0.c then right to A0.e
+
+
+class plusNode(Node):  # one or more
+    def pikchr(self):
+        self.inp = self.parent.outp
+        pik = ''
+        r = rand()
+        pik += 'A' + str(r) + ': ' + 'arrow linerad from ' + self.inp + '.e\n'
+        pik += 'L' + str(r+1) + ': ' + 'line linerad*2\n'
+        pik += 'B' + str(r) + ': ' + 'box \"' + self.name + '\" fit\n'
+        pik += 'L' + str(r) + ': ' + 'line linerad*2\n'
+        pik += 'A' + str(r+1) + ': ' + 'arrow from B' + str(r) + \
+            '.e right linerad then down 1.25*linerad then left last box.width/2 + linerad\n'
+        pik += 'A' + str(r+2) + ': ' + 'arrow from A' + str(r+1) + \
+            '.end left last box.width/2 + linerad then up linerad*1.25 then right to B' + \
+            str(r) + '.w\n'
+        self.outp = 'L' + str(r)
+        return pik
+
+
+# C0:  circle radius 10%
+# A0: arrow linerad from C0.e
+# L0: line linerad*2
+# B0: box "child" fit
+# A1: arrow linerad*2
+# L1: line linerad*2
+# A2: arrow from B0.e right linerad then down 1.25*linerad then left last box.width/2 + linerad
+# A3: arrow from A2.end left last box.width/2 + linerad then up linerad*1.25 then right to B0.w
+
+
+class questionMarkNode(Node):  # DONE zero or one
+    def pikchr(self):
+        self.inp = self.parent.outp
+        pik = ''
+        r = rand()
+        pik += 'A' + str(r+3) + ': ' + \
+            'arrow linerad from ' + self.inp + '.e\n'
+        pik += 'A' + str(r+1) + ': ' + 'arrow linerad from A' + \
+            str(r+3) + '.end right linerad*0.5 then down 1.25*linerad then right linerad*0.5\n'
+        pik += 'B' + str(r) + ': ' + 'box \"' + self.name + '\" fit\n'
+        pik += 'A' + \
+            str(r+2) + ': ' + \
+            'arrow right linerad then up 1.25*linerad then right linerad\n'
+        pik += 'A' + str(r) + ':' + ' arrow from A' + \
+            str(r+3) + '.e right to A' + str(r+2) + '.end\n'
+        pik += 'L' + str(r) + ': ' + 'line linerad\n'
+        self.outp = 'L' + str(r)
+        return pik
+
+# C1:  circle radius 10%
+# A272: arrow linerad from S911
+# A270: arrow linerad from A272.end right linerad*0.5 then down 1.25*linerad then right linerad*.5
+# B269: box "children" fit
+# A271: arrow right linerad then up 1.25*linerad then right linerad
+# A269: arrow from A272.e right to A271.end
+# L269: line linerad
+
+
 class eitherOrNode(Node):
-    def __init__():
-        pass
+    def pikchr(self):
+        self.inp = self.parent.outp
+        pik = ''
+        r = rand()
+        pik += 'A' + str(r) + ': ' + 'arrow linerad from ' + self.inp + '\n'
+        pik += 'B' + str(r) + ': ' + 'box \"' + self.name + '\" fit\n'
+        pik += 'L' + str(r) + ': ' + 'line linerad\n'
+        self.outp = 'L' + str(r)
+        return pik
 
 
 def tree_generator(parseTree, start):
@@ -182,10 +235,10 @@ if __name__ == '__main__':
         parseRuleName = parseRule.split(' ')[1]
         parseRuleList[parseRuleName] = utility.cleanParseRule(parseRule)
 
-    venn_op = parseRuleList['venn_op']
+    venn_op = parseRuleList['prim_expr']
     # prim_expr = parseRuleList['prim_expr']
 
-    startNode = startNode(name='venn_op', parent=None, level=1)
+    startNode = startNode(name='prim_expr', parent=None, level=1)
 
     # utility.testIfValidAndReturnLevel('venn_op', venn_op)
     try:
@@ -194,20 +247,33 @@ if __name__ == '__main__':
         print('Tree Generation Failed')
     # tree_generator(venn_op, start=startNode)
     testpic = Pic(name='test', startNode=startNode)
-    print(testpic.paint())
+    # print(testpic.paint())
+    # utility.visualize_all(parseRuleList)
 
-    # for i in range(10):
-    #     print(i, utility.get_levels(venn_op, i))
+    pnode = Node(name='parent', outp='S911')
+    cnode = starNode(name='child', parent=pnode)
+    pnode.children.append(cnode)
+    print('starNode')
+    print(cnode.pikchr())
+    print('-----------------------------')
 
-    # def tree_traverse(start, pik):
-    #     # print('before', pik)
-    #     pik += start.pikchr()
-    #     # print('after', pik)
-    #     if len(start.children) != 0:
-    #         for child in start.children:
-    #             # pik += child.pikchr()
-    #             pik = tree_traverse(child, pik)
-    #     return pik
+    pnode = Node(name='parent', outp='C0')
+    cnode = questionMarkNode(name='child', parent=pnode)
+    pnode.children.append(cnode)
+    print('questionMarkNode')
+    print(cnode.pikchr())
+    print('-----------------------------')
 
-    # pik = '$h = 0.21\nlinerad = 10px\nlinewid *= 0.5\n'
-    # print(tree_traverse(startNode, pik))
+    pnode = Node(name='parent', outp='C0')
+    cnode = starNode(name='child', parent=pnode)
+    pnode.children.append(cnode)
+    print('starNode')
+    print(cnode.pikchr())
+    print('-----------------------------')
+
+    pnode = Node(name='parent', outp='C0')
+    cnode = plusNode(name='child', parent=pnode)
+    pnode.children.append(cnode)
+    print('plusNode')
+    print(cnode.pikchr())
+    print('-----------------------------')
