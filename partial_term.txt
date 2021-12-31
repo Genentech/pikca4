@@ -1,0 +1,458 @@
+$h = 0.5
+linerad = 20px
+linewid *= 0.5
+text "partial_term"
+circle radius 10%
+L5027: line right linerad
+B8152: box "ruleBlock" fit with .w at L5027.end+(linerad, -$h*0)
+arrow from L5027 to B8152.w
+L8152: line linerad from B8152.e
+B6642: box "ruleAltList" fit with .w at L8152.end+(linerad, -$h*0)
+arrow from L8152 to B6642.w
+L6642: line linerad from B6642.e
+B8332: box "labeledAlt" fit with .w at L6642.end+(linerad, -$h*0)
+arrow from L6642 to B8332.w
+L8332: line linerad from B8332.e
+B2472: box "alternative" fit with .w at L8332.end+(linerad, -$h*0)
+arrow from L8332 to B2472.w
+L2472: line linerad from B2472.e
+B4680: box "element" fit with .w at L2472.end+(linerad, -$h*0)
+arrow from L2472 to B4680.w
+L4680: line linerad from B4680.e
+B5715: box "atom" fit with .w at L4680.end+(linerad, -$h*0)
+arrow from L4680 to B5715.w
+L5715: line linerad from B5715.e
+B5237: box "terminal" fit with .w at L5715.end+(linerad, -$h*0)
+arrow from L5715 to B5237.w
+L5237: line linerad from B5237.e
+B1: box "'a'" fit with .w at L5237.end+(linerad, -$h*0)
+arrow from L5237 to B1.w
+L1: line linerad from B1.e
+arrow right linerad
+circle radius 10%
+line from L4680.e right linerad/2 then down $h*1 then right linerad/2
+A1652: arrow linerad
+A1650: arrow linerad from A1652.end right linerad*0.5 then down $h then right linerad*0.5
+B1649: box "ebnfSuffix" fit
+A1651: arrow right linerad then up $h then right linerad
+A1649: arrow from A1652.e right to A1651.end
+L1649: line linerad
+arrow right linerad
+circle radius 10%
+B7066: box "element" fit with .w at L2472.end+(linerad, -$h*3)
+arrow from L2472 to B7066.w
+L7066: line linerad from B7066.e
+B484: box "atom" fit with .w at L7066.end+(linerad, -$h*0)
+arrow from L7066 to B484.w
+L484: line linerad from B484.e
+B4797: box "terminal" fit with .w at L484.end+(linerad, -$h*0)
+arrow from L484 to B4797.w
+L4797: line linerad from B4797.e
+B5905: box "'complete'" fit with .w at L4797.end+(linerad, -$h*0)
+arrow from L4797 to B5905.w
+L5905: line linerad from B5905.e
+arrow right linerad
+circle radius 10%
+B7061: box "element" fit with .w at L2472.end+(linerad, -$h*4)
+arrow from L2472 to B7061.w
+L7061: line linerad from B7061.e
+B3864: box "ebnf" fit with .w at L7061.end+(linerad, -$h*0)
+arrow from L7061 to B3864.w
+L3864: line linerad from B3864.e
+B3561: box "block" fit with .w at L3864.end+(linerad, -$h*0)
+arrow from L3864 to B3561.w
+L3561: line linerad from B3561.e
+B6202: box "" fit with .w at L3561.end+(linerad, -$h*0)
+arrow from L3561 to B6202.w
+L6202: line linerad from B6202.e
+B9675: box "altList" fit with .w at L6202.end+(linerad, -$h*0)
+arrow from L6202 to B9675.w
+L9675: line linerad from B9675.e
+B6254: box "alternative" fit with .w at L9675.end+(linerad, -$h*0)
+arrow from L9675 to B6254.w
+L6254: line linerad from B6254.e
+B7370: box "element" fit with .w at L6254.end+(linerad, -$h*0)
+arrow from L6254 to B7370.w
+L7370: line linerad from B7370.e
+B1326: box "atom" fit with .w at L7370.end+(linerad, -$h*0)
+arrow from L7370 to B1326.w
+L1326: line linerad from B1326.e
+B3162: box "terminal" fit with .w at L1326.end+(linerad, -$h*0)
+arrow from L1326 to B3162.w
+L3162: line linerad from B3162.e
+B3875: box "'date'" fit with .w at L3162.end+(linerad, -$h*0)
+arrow from L3162 to B3875.w
+L3875: line linerad from B3875.e
+arrow right linerad
+circle radius 10%
+B9602: box "alternative" fit with .w at L9675.end+(linerad, -$h*1)
+arrow from L9675 to B9602.w
+L9602: line linerad from B9602.e
+B5400: box "element" fit with .w at L9602.end+(linerad, -$h*0)
+arrow from L9602 to B5400.w
+L5400: line linerad from B5400.e
+B6617: box "atom" fit with .w at L5400.end+(linerad, -$h*0)
+arrow from L5400 to B6617.w
+L6617: line linerad from B6617.e
+B7276: box "terminal" fit with .w at L6617.end+(linerad, -$h*0)
+arrow from L6617 to B7276.w
+L7276: line linerad from B7276.e
+B2164: box "'dates'" fit with .w at L7276.end+(linerad, -$h*0)
+arrow from L7276 to B2164.w
+L2164: line linerad from B2164.e
+arrow right linerad
+circle radius 10%
+B9236: box "blockSuffix" fit with .w at L3864.end+(linerad, -$h*2)
+arrow from L3864 to B9236.w
+L9236: line linerad from B9236.e
+A7592: arrow linerad from L9236.e
+A7590: arrow linerad from A7592.end right linerad*0.5 then down $h then right linerad*0.5
+B7589: box "ebnfSuffix" fit
+A7591: arrow right linerad then up $h then right linerad
+A7589: arrow from A7592.e right to A7591.end
+L7589: line linerad
+arrow right linerad
+circle radius 10%
+B7957: box "labeledAlt" fit with .w at L6642.end+(linerad, -$h*8)
+arrow from L6642 to B7957.w
+L7957: line linerad from B7957.e
+B4672: box "alternative" fit with .w at L7957.end+(linerad, -$h*0)
+arrow from L7957 to B4672.w
+L4672: line linerad from B4672.e
+B6709: box "element" fit with .w at L4672.end+(linerad, -$h*0)
+arrow from L4672 to B6709.w
+L6709: line linerad from B6709.e
+B8981: box "atom" fit with .w at L6709.end+(linerad, -$h*0)
+arrow from L6709 to B8981.w
+L8981: line linerad from B8981.e
+B6802: box "terminal" fit with .w at L8981.end+(linerad, -$h*0)
+arrow from L8981 to B6802.w
+L6802: line linerad from B6802.e
+B1577: box "'a'" fit with .w at L6802.end+(linerad, -$h*0)
+arrow from L6802 to B1577.w
+L1577: line linerad from B1577.e
+arrow right linerad
+circle radius 10%
+line from L6709.e right linerad/2 then down $h*1 then right linerad/2
+A687: arrow linerad
+A685: arrow linerad from A687.end right linerad*0.5 then down $h then right linerad*0.5
+B684: box "ebnfSuffix" fit
+A686: arrow right linerad then up $h then right linerad
+A684: arrow from A687.e right to A686.end
+L684: line linerad
+arrow right linerad
+circle radius 10%
+B4498: box "element" fit with .w at L4672.end+(linerad, -$h*3)
+arrow from L4672 to B4498.w
+L4498: line linerad from B4498.e
+B8924: box "atom" fit with .w at L4498.end+(linerad, -$h*0)
+arrow from L4498 to B8924.w
+L8924: line linerad from B8924.e
+B1639: box "terminal" fit with .w at L8924.end+(linerad, -$h*0)
+arrow from L8924 to B1639.w
+L1639: line linerad from B1639.e
+B4577: box "'partial'" fit with .w at L1639.end+(linerad, -$h*0)
+arrow from L1639 to B4577.w
+L4577: line linerad from B4577.e
+arrow right linerad
+circle radius 10%
+B9535: box "element" fit with .w at L4672.end+(linerad, -$h*4)
+arrow from L4672 to B9535.w
+L9535: line linerad from B9535.e
+B973: box "ebnf" fit with .w at L9535.end+(linerad, -$h*0)
+arrow from L9535 to B973.w
+L973: line linerad from B973.e
+B1875: box "block" fit with .w at L973.end+(linerad, -$h*0)
+arrow from L973 to B1875.w
+L1875: line linerad from B1875.e
+B3549: box "" fit with .w at L1875.end+(linerad, -$h*0)
+arrow from L1875 to B3549.w
+L3549: line linerad from B3549.e
+B9486: box "altList" fit with .w at L3549.end+(linerad, -$h*0)
+arrow from L3549 to B9486.w
+L9486: line linerad from B9486.e
+B1080: box "alternative" fit with .w at L9486.end+(linerad, -$h*0)
+arrow from L9486 to B1080.w
+L1080: line linerad from B1080.e
+B6906: box "element" fit with .w at L1080.end+(linerad, -$h*0)
+arrow from L1080 to B6906.w
+L6906: line linerad from B6906.e
+B2360: box "atom" fit with .w at L6906.end+(linerad, -$h*0)
+arrow from L6906 to B2360.w
+L2360: line linerad from B2360.e
+B980: box "terminal" fit with .w at L2360.end+(linerad, -$h*0)
+arrow from L2360 to B980.w
+L980: line linerad from B980.e
+B1562: box "'date'" fit with .w at L980.end+(linerad, -$h*0)
+arrow from L980 to B1562.w
+L1562: line linerad from B1562.e
+arrow right linerad
+circle radius 10%
+B9992: box "alternative" fit with .w at L9486.end+(linerad, -$h*1)
+arrow from L9486 to B9992.w
+L9992: line linerad from B9992.e
+B4793: box "element" fit with .w at L9992.end+(linerad, -$h*0)
+arrow from L9992 to B4793.w
+L4793: line linerad from B4793.e
+B1540: box "atom" fit with .w at L4793.end+(linerad, -$h*0)
+arrow from L4793 to B1540.w
+L1540: line linerad from B1540.e
+B9624: box "terminal" fit with .w at L1540.end+(linerad, -$h*0)
+arrow from L1540 to B9624.w
+L9624: line linerad from B9624.e
+B8525: box "'dates'" fit with .w at L9624.end+(linerad, -$h*0)
+arrow from L9624 to B8525.w
+L8525: line linerad from B8525.e
+arrow right linerad
+circle radius 10%
+B5023: box "blockSuffix" fit with .w at L973.end+(linerad, -$h*2)
+arrow from L973 to B5023.w
+L5023: line linerad from B5023.e
+A2552: arrow linerad from L5023.e
+A2550: arrow linerad from A2552.end right linerad*0.5 then down $h then right linerad*0.5
+B2549: box "ebnfSuffix" fit
+A2551: arrow right linerad then up $h then right linerad
+A2549: arrow from A2552.e right to A2551.end
+L2549: line linerad
+arrow right linerad
+circle radius 10%
+B3289: box "labeledAlt" fit with .w at L6642.end+(linerad, -$h*16)
+arrow from L6642 to B3289.w
+L3289: line linerad from B3289.e
+B9844: box "alternative" fit with .w at L3289.end+(linerad, -$h*0)
+arrow from L3289 to B9844.w
+L9844: line linerad from B9844.e
+B2212: box "element" fit with .w at L9844.end+(linerad, -$h*0)
+arrow from L9844 to B2212.w
+L2212: line linerad from B2212.e
+B431: box "atom" fit with .w at L2212.end+(linerad, -$h*0)
+arrow from L2212 to B431.w
+L431: line linerad from B431.e
+B9381: box "terminal" fit with .w at L431.end+(linerad, -$h*0)
+arrow from L431 to B9381.w
+L9381: line linerad from B9381.e
+B8800: box "'a'" fit with .w at L9381.end+(linerad, -$h*0)
+arrow from L9381 to B8800.w
+L8800: line linerad from B8800.e
+arrow right linerad
+circle radius 10%
+line from L2212.e right linerad/2 then down $h*1 then right linerad/2
+A8444: arrow linerad
+A8442: arrow linerad from A8444.end right linerad*0.5 then down $h then right linerad*0.5
+B8441: box "ebnfSuffix" fit
+A8443: arrow right linerad then up $h then right linerad
+A8441: arrow from A8444.e right to A8443.end
+L8441: line linerad
+arrow right linerad
+circle radius 10%
+B571: box "element" fit with .w at L9844.end+(linerad, -$h*3)
+arrow from L9844 to B571.w
+L571: line linerad from B571.e
+B4073: box "atom" fit with .w at L571.end+(linerad, -$h*0)
+arrow from L571 to B4073.w
+L4073: line linerad from B4073.e
+B7023: box "terminal" fit with .w at L4073.end+(linerad, -$h*0)
+arrow from L4073 to B7023.w
+L7023: line linerad from B7023.e
+B9333: box "'complete'" fit with .w at L7023.end+(linerad, -$h*0)
+arrow from L7023 to B9333.w
+L9333: line linerad from B9333.e
+arrow right linerad
+circle radius 10%
+B7344: box "element" fit with .w at L9844.end+(linerad, -$h*4)
+arrow from L9844 to B7344.w
+L7344: line linerad from B7344.e
+B7243: box "ebnf" fit with .w at L7344.end+(linerad, -$h*0)
+arrow from L7344 to B7243.w
+L7243: line linerad from B7243.e
+B3678: box "block" fit with .w at L7243.end+(linerad, -$h*0)
+arrow from L7243 to B3678.w
+L3678: line linerad from B3678.e
+B4644: box "" fit with .w at L3678.end+(linerad, -$h*0)
+arrow from L3678 to B4644.w
+L4644: line linerad from B4644.e
+B5231: box "altList" fit with .w at L4644.end+(linerad, -$h*0)
+arrow from L4644 to B5231.w
+L5231: line linerad from B5231.e
+B3378: box "alternative" fit with .w at L5231.end+(linerad, -$h*0)
+arrow from L5231 to B3378.w
+L3378: line linerad from B3378.e
+B9240: box "element" fit with .w at L3378.end+(linerad, -$h*0)
+arrow from L3378 to B9240.w
+L9240: line linerad from B9240.e
+B3772: box "atom" fit with .w at L9240.end+(linerad, -$h*0)
+arrow from L9240 to B3772.w
+L3772: line linerad from B3772.e
+B6453: box "terminal" fit with .w at L3772.end+(linerad, -$h*0)
+arrow from L3772 to B6453.w
+L6453: line linerad from B6453.e
+B1379: box "'datetime'" fit with .w at L6453.end+(linerad, -$h*0)
+arrow from L6453 to B1379.w
+L1379: line linerad from B1379.e
+arrow right linerad
+circle radius 10%
+B924: box "alternative" fit with .w at L5231.end+(linerad, -$h*1)
+arrow from L5231 to B924.w
+L924: line linerad from B924.e
+B687: box "element" fit with .w at L924.end+(linerad, -$h*0)
+arrow from L924 to B687.w
+L687: line linerad from B687.e
+B8908: box "atom" fit with .w at L687.end+(linerad, -$h*0)
+arrow from L687 to B8908.w
+L8908: line linerad from B8908.e
+B8800: box "terminal" fit with .w at L8908.end+(linerad, -$h*0)
+arrow from L8908 to B8800.w
+L8800: line linerad from B8800.e
+B8638: box "'datetimes'" fit with .w at L8800.end+(linerad, -$h*0)
+arrow from L8800 to B8638.w
+L8638: line linerad from B8638.e
+arrow right linerad
+circle radius 10%
+B974: box "alternative" fit with .w at L5231.end+(linerad, -$h*2)
+arrow from L5231 to B974.w
+L974: line linerad from B974.e
+B2368: box "element" fit with .w at L974.end+(linerad, -$h*0)
+arrow from L974 to B2368.w
+L2368: line linerad from B2368.e
+B4888: box "atom" fit with .w at L2368.end+(linerad, -$h*0)
+arrow from L2368 to B4888.w
+L4888: line linerad from B4888.e
+B3360: box "terminal" fit with .w at L4888.end+(linerad, -$h*0)
+arrow from L4888 to B3360.w
+L3360: line linerad from B3360.e
+B662: box "'date" fit with .w at L3360.end+(linerad, -$h*0)
+arrow from L3360 to B662.w
+L662: line linerad from B662.e
+arrow right linerad
+circle radius 10%
+B8560: box "blockSuffix" fit with .w at L7243.end+(linerad, -$h*3)
+arrow from L7243 to B8560.w
+L8560: line linerad from B8560.e
+A6636: arrow linerad from L8560.e
+A6634: arrow linerad from A6636.end right linerad*0.5 then down $h then right linerad*0.5
+B6633: box "ebnfSuffix" fit
+A6635: arrow right linerad then up $h then right linerad
+A6633: arrow from A6636.e right to A6635.end
+L6633: line linerad
+arrow right linerad
+circle radius 10%
+B2792: box "labeledAlt" fit with .w at L6642.end+(linerad, -$h*25)
+arrow from L6642 to B2792.w
+L2792: line linerad from B2792.e
+B1122: box "alternative" fit with .w at L2792.end+(linerad, -$h*0)
+arrow from L2792 to B1122.w
+L1122: line linerad from B1122.e
+B1851: box "element" fit with .w at L1122.end+(linerad, -$h*0)
+arrow from L1122 to B1851.w
+L1851: line linerad from B1851.e
+B4813: box "atom" fit with .w at L1851.end+(linerad, -$h*0)
+arrow from L1851 to B4813.w
+L4813: line linerad from B4813.e
+B8700: box "terminal" fit with .w at L4813.end+(linerad, -$h*0)
+arrow from L4813 to B8700.w
+L8700: line linerad from B8700.e
+B3113: box "'a'" fit with .w at L8700.end+(linerad, -$h*0)
+arrow from L8700 to B3113.w
+L3113: line linerad from B3113.e
+arrow right linerad
+circle radius 10%
+line from L1851.e right linerad/2 then down $h*1 then right linerad/2
+A7576: arrow linerad
+A7574: arrow linerad from A7576.end right linerad*0.5 then down $h then right linerad*0.5
+B7573: box "ebnfSuffix" fit
+A7575: arrow right linerad then up $h then right linerad
+A7573: arrow from A7576.e right to A7575.end
+L7573: line linerad
+arrow right linerad
+circle radius 10%
+B1493: box "element" fit with .w at L1122.end+(linerad, -$h*3)
+arrow from L1122 to B1493.w
+L1493: line linerad from B1493.e
+B7138: box "atom" fit with .w at L1493.end+(linerad, -$h*0)
+arrow from L1493 to B7138.w
+L7138: line linerad from B7138.e
+B4863: box "terminal" fit with .w at L7138.end+(linerad, -$h*0)
+arrow from L7138 to B4863.w
+L4863: line linerad from B4863.e
+B8152: box "'partial'" fit with .w at L4863.end+(linerad, -$h*0)
+arrow from L4863 to B8152.w
+L8152: line linerad from B8152.e
+arrow right linerad
+circle radius 10%
+B3871: box "element" fit with .w at L1122.end+(linerad, -$h*4)
+arrow from L1122 to B3871.w
+L3871: line linerad from B3871.e
+B2391: box "ebnf" fit with .w at L3871.end+(linerad, -$h*0)
+arrow from L3871 to B2391.w
+L2391: line linerad from B2391.e
+B5601: box "block" fit with .w at L2391.end+(linerad, -$h*0)
+arrow from L2391 to B5601.w
+L5601: line linerad from B5601.e
+B7328: box "" fit with .w at L5601.end+(linerad, -$h*0)
+arrow from L5601 to B7328.w
+L7328: line linerad from B7328.e
+B68: box "altList" fit with .w at L7328.end+(linerad, -$h*0)
+arrow from L7328 to B68.w
+L68: line linerad from B68.e
+B8859: box "alternative" fit with .w at L68.end+(linerad, -$h*0)
+arrow from L68 to B8859.w
+L8859: line linerad from B8859.e
+B9580: box "element" fit with .w at L8859.end+(linerad, -$h*0)
+arrow from L8859 to B9580.w
+L9580: line linerad from B9580.e
+B9879: box "atom" fit with .w at L9580.end+(linerad, -$h*0)
+arrow from L9580 to B9879.w
+L9879: line linerad from B9879.e
+B1790: box "terminal" fit with .w at L9879.end+(linerad, -$h*0)
+arrow from L9879 to B1790.w
+L1790: line linerad from B1790.e
+B94: box "'datetime'" fit with .w at L1790.end+(linerad, -$h*0)
+arrow from L1790 to B94.w
+L94: line linerad from B94.e
+arrow right linerad
+circle radius 10%
+B514: box "alternative" fit with .w at L68.end+(linerad, -$h*1)
+arrow from L68 to B514.w
+L514: line linerad from B514.e
+B3081: box "element" fit with .w at L514.end+(linerad, -$h*0)
+arrow from L514 to B3081.w
+L3081: line linerad from B3081.e
+B6121: box "atom" fit with .w at L3081.end+(linerad, -$h*0)
+arrow from L3081 to B6121.w
+L6121: line linerad from B6121.e
+B7279: box "terminal" fit with .w at L6121.end+(linerad, -$h*0)
+arrow from L6121 to B7279.w
+L7279: line linerad from B7279.e
+B7575: box "'datetimes'" fit with .w at L7279.end+(linerad, -$h*0)
+arrow from L7279 to B7575.w
+L7575: line linerad from B7575.e
+arrow right linerad
+circle radius 10%
+B5743: box "alternative" fit with .w at L68.end+(linerad, -$h*2)
+arrow from L68 to B5743.w
+L5743: line linerad from B5743.e
+B4816: box "element" fit with .w at L5743.end+(linerad, -$h*0)
+arrow from L5743 to B4816.w
+L4816: line linerad from B4816.e
+B6985: box "atom" fit with .w at L4816.end+(linerad, -$h*0)
+arrow from L4816 to B6985.w
+L6985: line linerad from B6985.e
+B5034: box "terminal" fit with .w at L6985.end+(linerad, -$h*0)
+arrow from L6985 to B5034.w
+L5034: line linerad from B5034.e
+B1949: box "'date" fit with .w at L5034.end+(linerad, -$h*0)
+arrow from L5034 to B1949.w
+L1949: line linerad from B1949.e
+arrow right linerad
+circle radius 10%
+B4541: box "blockSuffix" fit with .w at L2391.end+(linerad, -$h*3)
+arrow from L2391 to B4541.w
+L4541: line linerad from B4541.e
+A57: arrow linerad from L4541.e
+A55: arrow linerad from A57.end right linerad*0.5 then down $h then right linerad*0.5
+B54: box "ebnfSuffix" fit
+A56: arrow right linerad then up $h then right linerad
+A54: arrow from A57.e right to A56.end
+L54: line linerad
+arrow right linerad
+circle radius 10%
