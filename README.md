@@ -9,6 +9,11 @@ It's visually helpful and attractive for potential users to understand and use a
        Example.g4 --> example.pikchr
 ```
 
+For instance:
+
+<img src="/uploads/33706e4a49b4a6ea1961e7a1cd4d18de/Screen_Shot_2022-01-16_at_23.01.05.png" width="66%" height="66%">
+
+
 ### Examples
 1. [Antlr4 grammar examples](https://github.com/antlr/grammars-v4)
 1. [Pikchr examples](https://pikchr.org/home/doc/trunk/doc/examples.md)
