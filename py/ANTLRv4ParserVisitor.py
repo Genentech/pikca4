@@ -6,6 +6,8 @@ from random import randrange
 # ebnfsuffix
 # ebnf add offset: Fixed
 # Close loose end: use id to reflect the order in the chain: Fixed
+# candidate offset to the next label_offset
+# level number refine
 
 
 def rand():
@@ -39,12 +41,12 @@ def closeLooseEnd(dictOfLooseEnd, pik):
         # anchor = 'L' + str(r)
         anchor = idGen('L', int(level)+1, r)
         pik += anchor + ': line from ' + \
-            dictOfLooseEnd[longIdx] + ' right linerad*3\n'
+            dictOfLooseEnd[longIdx] + '.e right linerad*4\n'
         for idx, end in dictOfLooseEnd.items():
             if idx != longIdx:
                 pik += 'line from ' + end + ' right until even with ' + \
                     anchor + \
-                    '.e - (0.5*linerad, 0) then up until even with ' + \
+                    '.e - (2*linerad, 0) then up until even with ' + \
                     anchor + '\nright\n'
         print(dictOfLooseEnd, 'close loose', longIdx, level, selEnd)
     elif len(dictOfLooseEnd) <= 1:
@@ -165,31 +167,37 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
     #############################################################
     # Visit a parse tree produced by ANTLRv4Parser#parserRuleSpec.
     def visitParserRuleSpec(self, ctx: ANTLRv4Parser.ParserRuleSpecContext):
-        print('new parserRule',  ctx.getChild(0).getText())
-        self.currEndPoint = ''
-        self.branchList = []  # stack saving current branch
-        # stack saving all endpoint of each branch of each alt
-        self.altList = [{'0': '0'}]
-        self.level = [1]  # saving for generating id
-        self.elementStart = []
-        self.prevBranchWidth = 1
-        r = rand()
-        # nid = 'L_' + str(self.level[-1]) + '_' + str(r)
-        nid = idGen('L', self.level[-1], r)
-        self.splitNodeStack.append(nid)
-        prs = ctx.getChild(0).getText()
+        try:
+            print('\n\nnew parserRule',  ctx.getChild(0).getText())
+            self.currEndPoint = ''
+            self.branchList = []  # stack saving current branch
+            # stack saving all endpoint of each branch of each alt
+            self.altList = [{'0': '0'}]
+            self.level = [1]  # saving for generating id
+            self.elementStart = []
+            self.blockSuf = False
+            self.suffixOffset = [1]
 
-        self.pik = '$h = 0.5\nlinerad = 20px\nlinewid *= 0.5\nhline = 30px\n'
-        self.pik += 'text ' + '\"' + prs + '\"' + '\n'
-        self.pik += 'circle radius 10%\n'
-        self.pik += nid + ': line right linerad\n'
-        self.visitChildren(ctx)
+            r = rand()
+            # nid = 'L_' + str(self.level[-1]) + '_' + str(r)
+            nid = idGen('L', self.level[-1], r)
+            self.splitNodeStack.append(nid)
+            prs = ctx.getChild(0).getText()
 
-        # print('the end or parseRuleSpec', self.altList)
-        self.pik += list(self.altList[-1].values())[0] + \
-            ': line right linerad*2\ncircle radius 10%\n '
-        self.pikDict[prs] = self.pik
-        self.splitNodeStack.pop()
+            self.pik = '$h = 0.5\nlinerad = 20px\nlinewid *= 0.5\nhline = 30px\n'
+            self.pik += 'text ' + '\"' + prs + '\"' + '\n'
+            self.pik += 'circle radius 10%\n'
+            self.pik += nid + ': line right linerad\n'
+            self.visitChildren(ctx)
+
+            # print('the end or parseRuleSpec', self.altList)
+            self.pik += list(self.altList[-1].values())[0] + \
+                ': line right linerad*2\ncircle radius 10%\n '
+            self.pikDict[prs] = self.pik
+            self.splitNodeStack.pop()
+        except:
+            print(ctx.getChild(0).getText(), 'failed')
+            print(traceback.print_exc())
     # Visit a parse tree produced by ANTLRv4Parser#exceptionGroup.
 
     def visitExceptionGroup(self, ctx: ANTLRv4Parser.ExceptionGroupContext):
@@ -245,6 +253,9 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.currEndPoint = nid
         self.splitNodeStack.append(nid)
         self.branchList.append(0)
+        self.labelAltEnd = {}
+        self.labelAltOrd = 0
+
         parentNode = self.splitNodeStack[-1]
         # print('RULEALTLIST: at in of ruleAltList', self.altList)
         self.pik += parentNode + ': circle radius 0\n'
@@ -254,7 +265,8 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.branchList.pop()
         looseEnd = self.altList.pop()
         self.level.pop()
-        self.pik, newEnd = closeLooseEnd(looseEnd, self.pik)
+        # self.pik, newEnd = closeLooseEnd(looseEnd, self.pik)
+        self.pik, newEnd = closeLooseEnd(self.labelAltEnd, self.pik)
         self.currEndPoint = newEnd
         self.altList[-1][list(self.altList[-1].keys())[-1]] = newEnd
         # print('RULEALTLIST: at end of ruleAltList', self.altList)
@@ -262,12 +274,15 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
     def visitLabeledAlt(self, ctx: ANTLRv4Parser.LabeledAltContext):
         # print('labeledAlt', ctx.getText(), self.branchList)
-        # self.candLabeledAltOffset = 0
-        # self.branchList.append(0)
-        # self.altList[-1][0] = '0'
+        self.candLabeledAltOffset = 0
+        self.prevBranchWidth = 1
+
         self.visitChildren(ctx)
         # self.branchList.pop()
-        # self.branchList[-1] += self.candLabeledAltOffset
+        print('labeledAlt', self.candLabeledAltOffset)
+        self.branchList[-1] += max(self.candLabeledAltOffset-1, 0)
+        self.labelAltEnd[str(self.labelAltOrd)] = self.currEndPoint
+        self.labelAltOrd += 1
 
         # looseEnd = self.altList.pop()
         # self.level.pop()
@@ -329,6 +344,7 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.level.append(self.level[-1])
         # print('altlist', ctx.getText(), self.level[-1])
         r = rand()
+
         # initialize a dict for branches endpoint
         self.altList.append({'0': '0'})
         # nid = 'C' + str(r)
@@ -337,22 +353,26 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
         self.branchList.append(0)
         # print('at in of ALTLIST:', self.altList)
-        self.pik += nid + ': circle radius 0\n'
+        self.pik += nid + ': circle radius 0 at ' + self.currEndPoint + '.e\n'
         self.currEndPoint = nid
         self.visitChildren(ctx)
-        # self.pik += ''
-        # print('before out of ALTLIST:', self.altList)
+
         self.splitNodeStack.pop()
         currbranch = self.branchList.pop()
-        self.prevBranchWidth = currbranch
-        # self.candLabeledAltOffset = max(
-        # self.candLabeledAltOffset, currbranch - 1)
-        self.branchList[-1] += currbranch - 1
+        self.prevBranchWidth = max(currbranch, self.prevBranchWidth)
+        self.suffixOffset[-1] = max(currbranch, self.suffixOffset[-1])
+
+        print('previous branch width', self.prevBranchWidth)
+        self.candLabeledAltOffset = max(
+            self.candLabeledAltOffset, currbranch - 1)
+        # self.branchList[-1] += currbranch - 1
+
         looseEnd = self.altList.pop()
         self.level.pop()
         self.pik, newEnd = closeLooseEnd(looseEnd, self.pik)
-        self.altList[-1][str(int(list(self.altList[-1].keys())[-1])+1)] = newEnd
+        self.altList[-1][str(int(list(self.altList[-1].keys())[-1]))] = newEnd
         self.currEndPoint = newEnd
+        # self.splitNodeStack.append(newEnd)
         # self.pik, newEnd = closeLooseEnd(looseEnd, self.pik)
         # self.altList[-1][list(self.altList[-1].keys())[-1]] = newEnd
 
@@ -365,8 +385,8 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         # self.altList.append({})
         r = rand()
         # print(ctx.getText(), 'level1:', self.level1)
-        currbranch = self.branchList.pop()
-        self.branchList.append(currbranch+1)
+        currbranch = self.branchList[-1]
+
         offset = currbranch
 
         parentNode = self.splitNodeStack[-1]
@@ -387,7 +407,7 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.visitChildren(ctx)
         print('branchlist:', self.branchList, '\nend of current branch:', str(currbranch), 'change from',
               self.altList[-1], 'to', self.currEndPoint)
-
+        self.branchList[-1] = currbranch+1
         self.altList[-1][str(currbranch)] = self.currEndPoint
         self.level.pop()
 
@@ -412,49 +432,67 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
     #############################################################
     # Visit a parse tree produced by ANTLRv4Parser#ebnf.
     def visitEbnf(self, ctx: ANTLRv4Parser.EbnfContext):
-        # print('this is a special terminal node', ctx)
-        return self.visitChildren(ctx)
-
+        self.suffixOffset.append(1)
+        self.visitChildren(ctx)
+        out = self.suffixOffset.pop()
+        self.suffixOffset[-1] = max(out, self.suffixOffset[-1])
     # Visit a parse tree produced by ANTLRv4Parser#blockSuffix.
-    def visitBlockSuffix(self, ctx: ANTLRv4Parser.BlockSuffixContext):
-        return self.visitChildren(ctx)
 
+    def visitBlockSuffix(self, ctx: ANTLRv4Parser.BlockSuffixContext):
+        self.blockSuf = True
+        self.visitChildren(ctx)
+        self.blockSuf = False
     # Visit a parse tree produced by ANTLRv4Parser#ebnfSuffix.
+
     def visitEbnfSuffix(self, ctx: ANTLRv4Parser.EbnfSuffixContext):
         print('special sign found', ctx.getText())
         print('previous endpoint', self.elementStart)
+        print('previousbranch width', self.prevBranchWidth)
         startNode = self.elementStart[-1]
 
         cat = ctx.getText()
-        if self.prevBranchWidth != 1:
-            offset = self.prevBranchWidth
-            self.prevBranchWidth = 1
+        # if self.blockSuf and self.prevBranchWidth != 1:
+        #     offset = self.prevBranchWidth
+
+        # else:
+        #     offset = 1
+        # self.prevBranchWidth += 1
+
+        if self.blockSuf and self.suffixOffset[-1] != 1:
+            offset = self.suffixOffset[-1]
         else:
             offset = 1
+        self.suffixOffset[-1] += 1
+        self.prevBranchWidth += 1
 
+        self.candLabeledAltOffset = max(
+            self.candLabeledAltOffset, self.prevBranchWidth + 1)
+
+        # offset = max(offset, self.candLabeledAltOffset-1)
         if cat == '*':
             self.pik += 'line from ' + startNode + '.c + (10px,0) left 10px then down hline*' + str(offset) + ' then right until even with ' + \
                 startNode + '.c + (' + self.currEndPoint + \
                 '.e.x*0.5 - ' + startNode + '.c.x*0.5, 0)\n'
             self.pik += 'arrow <- right until even with ' + self.currEndPoint + \
                 '.e then up even with ' + self.currEndPoint + '.e then left 10px\nright\n'
-            self.branchList[-1] += 1
+            # self.branchList[-1] += 1
 
         elif cat == '+':
-            self.pik += 'line from ' + startNode + '.c + (10px,0) left 10px then down hline*' + str(offset) + ' then right until even with ' + \
+            self.pik += 'line from ' + startNode + '.c + (0.5*linerad,0) left 0.2*linerad then down hline*' + str(offset) + ' then right until even with ' + \
                 startNode + '.c + (' + self.currEndPoint + \
                 '.e.x*0.5 - ' + startNode + '.c.x*0.5, 0)\n'
             self.pik += 'arrow <- right until even with ' + self.currEndPoint + \
-                '.e then up even with ' + self.currEndPoint + '.e then left 10px\nright\n'
-            self.branchList[-1] += 1
+                '.c then up even with ' + self.currEndPoint + '.c then left 10px\nright\n'
+            # self.branchList[-1] += 1
 
         elif cat == '?':
             self.pik += 'arrow from ' + startNode + '.c down hline*' + str(offset) + ' then right until even with ' + \
                 startNode + '.c + (' + self.currEndPoint + \
                 '.e.x*0.5 - ' + startNode + '.c.x*0.5, 0)\n'
             self.pik += 'line right until even with ' + self.currEndPoint + \
-                '.e then up even with ' + self.currEndPoint + '.e\nright\n'
-            self.branchList[-1] += 1
+                '.c then up even with ' + self.currEndPoint + '.c\nright\n'
+            # self.branchList[-1] += 1
+
         return self.visitChildren(ctx)
 
     # Visit a parse tree produced by ANTLRv4Parser#lexerAtom.
@@ -504,9 +542,11 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ANTLRv4Parser#block.
     def visitBlock(self, ctx: ANTLRv4Parser.BlockContext):
-        return self.visitChildren(ctx)
+
+        self.visitChildren(ctx)
 
     # Visit a parse tree produced by ANTLRv4Parser#ruleref.
+
     def visitRuleref(self, ctx: ANTLRv4Parser.RulerefContext):
         # print('ruleref found', ctx.getText())
         # r = rand()
