@@ -7,7 +7,7 @@ from random import randrange
 # ebnf add offset: Fixed
 # Close loose end: use id to reflect the order in the chain: Fixed
 # candidate offset to the next label_offset
-# level number refine
+# level number refine: fixed
 
 
 def rand():
@@ -492,7 +492,7 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
             self.pik += 'line right until even with ' + self.currEndPoint + \
                 '.c then up even with ' + self.currEndPoint + '.c\nright\n'
             # self.branchList[-1] += 1
-
+        self.level[-1] += 1
         return self.visitChildren(ctx)
 
     # Visit a parse tree produced by ANTLRv4Parser#lexerAtom.
@@ -504,7 +504,10 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
     def visitAtom(self, ctx: ANTLRv4Parser.AtomContext):
 
-        self.level[-1] += 1
+        if len(ctx.getText()) > 12:
+            self.level[-1] += 2
+        else:
+            self.level[-1] += 1
 
         print('atom', ctx.getText(),
               self.level[-1], self.altList, self.branchList)
