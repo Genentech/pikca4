@@ -8,6 +8,7 @@ from random import randrange
 # Close loose end: use id to reflect the order in the chain: Fixed
 # candidate offset to the next label_offset
 # level number refine: fixed
+# overlap for neighboring suffix
 
 
 def rand():
@@ -274,13 +275,13 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
     def visitLabeledAlt(self, ctx: ANTLRv4Parser.LabeledAltContext):
         # print('labeledAlt', ctx.getText(), self.branchList)
-        self.candLabeledAltOffset = 0
+        self.candLabeledAltOffset = [0]
         self.prevBranchWidth = 1
 
         self.visitChildren(ctx)
         # self.branchList.pop()
         print('labeledAlt', self.candLabeledAltOffset)
-        self.branchList[-1] += max(self.candLabeledAltOffset-1, 0)
+        self.branchList[-1] += max(self.candLabeledAltOffset)
         self.labelAltEnd[str(self.labelAltOrd)] = self.currEndPoint
         self.labelAltOrd += 1
 
@@ -363,8 +364,7 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.suffixOffset[-1] = max(currbranch, self.suffixOffset[-1])
 
         print('previous branch width', self.prevBranchWidth)
-        self.candLabeledAltOffset = max(
-            self.candLabeledAltOffset, currbranch - 1)
+        self.candLabeledAltOffset.append(currbranch - 1)
         # self.branchList[-1] += currbranch - 1
 
         looseEnd = self.altList.pop()
@@ -465,8 +465,7 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.suffixOffset[-1] += 1
         self.prevBranchWidth += 1
 
-        self.candLabeledAltOffset = max(
-            self.candLabeledAltOffset, self.prevBranchWidth + 1)
+        self.candLabeledAltOffset.append(self.prevBranchWidth + 1)
 
         # offset = max(offset, self.candLabeledAltOffset-1)
         if cat == '*':
