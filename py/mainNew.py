@@ -1,5 +1,6 @@
 
 
+import argparse
 from antlr4 import *
 from ANTLRv4Lexer import ANTLRv4Lexer
 from ANTLRv4ParserVisitor import ANTLRv4ParserVisitor
@@ -7,20 +8,11 @@ from ANTLRv4Parser import ANTLRv4Parser
 import sys
 #!coding=utf-8
 import os
+import glob
 defaultencoding = 'utf-8'
 if sys.getdefaultencoding() != defaultencoding:
     reload(sys)
     sys.setdefaultencoding(defaultencoding)
-
-# branchList
-
-# level
-
-# altList
-
-
-def toHtml(name='test', loc=''):
-    pass
 
 
 def main(grammer, txtLoc='', SVGLoc='', htmlLoc=''):
@@ -39,7 +31,7 @@ def main(grammer, txtLoc='', SVGLoc='', htmlLoc=''):
             os.makedirs(txtLoc)
         try:
             for i, c in visitor.pikDict.items():
-                filename = os.path.join(txtLoc, (i + '.txt'))
+                filename = os.path.join(txtLoc, (i + '.pikchr'))
                 t = open(filename, mode='w', encoding='utf8')
                 t.write(c)
             t.close()
@@ -55,11 +47,26 @@ def main(grammer, txtLoc='', SVGLoc='', htmlLoc=''):
             if htmlLoc != '':
                 if not os.path.isdir(htmlLoc):
                     os.makedirs(htmlLoc)
-                # toHtml(name = report, loc = htmlLoc)
+                filename = htmlLoc + '/test.html'
+                cmd = './pikchr/pikchr  ' + txtLoc + '/*.txt > ' + filename
+                print(cmd)
+                os.system(cmd)
 
 
 if __name__ == '__main__':
+    # toHtml(SVGFolder='./SQLite/OutSVG')
 
-    main(grammer='./SQLiteParser.g4',
-         txtLoc='./SQLite/OutPikchr', SVGLoc='./SQLite/OutSVG')
+    parser = argparse.ArgumentParser("g4 To pikchr")
+    parser.add_argument(
+        '-g', "--grammar", help="path of the g4 grammer file", type=str)
+    parser.add_argument("-op", "--OutputPikchr",
+                        help="pikchr file folder path", type=str, default='')
+    parser.add_argument("-os", "--OutputSVG",
+                        help="svg file folder path", type=str, default='')
+    args = parser.parse_args()
+
+    main(grammer=args.grammar,
+         txtLoc=args.OutputPikchr, SVGLoc=args.OutputSVG)
+    # main(grammer='./ApplEdible.g4',
+    #      txtLoc='./appl/OutPikchr', SVGLoc='./appl/OutSVG')
     # print(os.path.join('test1', 'test2', 'test.txt'))
