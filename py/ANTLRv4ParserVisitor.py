@@ -1,6 +1,7 @@
 # Generated from ./py/ANTLRv4Parser.g4 by ANTLR 4.9.2
 from antlr4 import *
 from random import randrange
+import math
 
 # To do
 # ebnfsuffix
@@ -45,7 +46,7 @@ def closeLooseEnd(dictOfLooseEnd, pik):
                     anchor + \
                     '.e - (2*linerad, 0) then up until even with ' + \
                     anchor + '\nright\n'
-        print(dictOfLooseEnd, 'close loose', longIdx, level, selEnd)
+        # print(dictOfLooseEnd, 'close loose', longIdx, level, selEnd)
     elif len(dictOfLooseEnd) <= 1:
         anchor = list(dictOfLooseEnd.values())[-1]
     return pik, anchor
@@ -359,7 +360,7 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         self.prevBranchWidth = max(currbranch, self.prevBranchWidth)
         self.suffixOffset[-1] = max(currbranch, self.suffixOffset[-1])
 
-        print('previous branch width', self.prevBranchWidth)
+        # print('previous branch width', self.prevBranchWidth)
         self.candLabeledAltOffset.append(currbranch - 1)
         # self.branchList[-1] += currbranch - 1
 
@@ -401,8 +402,8 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
         self.currEndPoint = nid2
         self.visitChildren(ctx)
-        print('branchlist:', self.branchList, '\nend of current branch:', str(currbranch), 'change from',
-              self.altList[-1], 'to', self.currEndPoint)
+        # print('branchlist:', self.branchList, '\nend of current branch:', str(currbranch), 'change from',
+        #       self.altList[-1], 'to', self.currEndPoint)
         self.branchList[-1] = currbranch+1
         self.altList[-1][str(currbranch)] = self.currEndPoint
         self.level.pop()
@@ -441,18 +442,12 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by ANTLRv4Parser#ebnfSuffix.
 
     def visitEbnfSuffix(self, ctx: ANTLRv4Parser.EbnfSuffixContext):
-        print('special sign found', ctx.getText())
-        print('previous endpoint', self.elementStart)
-        print('previousbranch width', self.prevBranchWidth)
+        # print('special sign found', ctx.getText())
+        # print('previous endpoint', self.elementStart)
+        # print('previousbranch width', self.prevBranchWidth)
         startNode = self.elementStart[-1]
 
         cat = ctx.getText()
-        # if self.blockSuf and self.prevBranchWidth != 1:
-        #     offset = self.prevBranchWidth
-
-        # else:
-        #     offset = 1
-        # self.prevBranchWidth += 1
 
         if self.blockSuf and self.suffixOffset[-1] != 1:
             offset = self.suffixOffset[-1]
@@ -508,10 +503,12 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
 
     def visitAtom(self, ctx: ANTLRv4Parser.AtomContext):
 
-        if len(ctx.getText()) > 12:
-            self.level[-1] += 2
-        else:
-            self.level[-1] += 1
+        # if len(ctx.getText()) > 12:
+        #     self.level[-1] += 2
+        # else:
+        #     self.level[-1] += 1
+
+        self.level[-1] += math.floor(len(ctx.getText())/12) + 1
 
         print('atom', ctx.getText(),
               self.level[-1], self.altList, self.branchList)
