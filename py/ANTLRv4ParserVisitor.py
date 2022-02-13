@@ -20,10 +20,6 @@ def rand():
 def idGen(typeN, level, rand):
     return typeN + '_' + str(level) + '_' + str(rand)
 
-# def maxIdx(dictIn):
-#     for idx, c in dictIn:
-#         if int
-
 
 def closeLooseEnd(dictOfLooseEnd, pik):
     if len(dictOfLooseEnd) > 1:
@@ -462,19 +458,28 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
             offset = self.suffixOffset[-1]
         else:
             offset = 1
-        self.suffixOffset[-1] += 1
-        self.prevBranchWidth += 1
+
+        if cat == '+' or cat == '?':
+            self.suffixOffset[-1] += 1
+            self.prevBranchWidth += 1
+        elif cat == '*':
+            self.suffixOffset[-1] += 2
+            self.prevBranchWidth += 2
 
         self.candLabeledAltOffset.append(self.prevBranchWidth + 1)
 
         # offset = max(offset, self.candLabeledAltOffset-1)
         if cat == '*':
-            self.pik += 'line from ' + startNode + '.c + (10px,0) left 10px then down hline*' + str(offset) + ' then right until even with ' + \
+            self.pik += 'line from ' + startNode + '.c + (0.5*linerad,0) left 0.2*linerad then down hline*' + str(offset) + ' then right until even with ' + \
                 startNode + '.c + (' + self.currEndPoint + \
                 '.e.x*0.5 - ' + startNode + '.c.x*0.5, 0)\n'
             self.pik += 'arrow <- right until even with ' + self.currEndPoint + \
-                '.e then up even with ' + self.currEndPoint + '.e then left 10px\nright\n'
-            # self.branchList[-1] += 1
+                '.c then up even with ' + self.currEndPoint + '.c then left 10px\nright\n'
+            self.pik += 'arrow from ' + startNode + '.c down hline*' + str(offset+1) + ' then right until even with ' + \
+                startNode + '.c + (' + self.currEndPoint + \
+                '.e.x*0.5 - ' + startNode + '.c.x*0.5, 0)\n'
+            self.pik += 'line right until even with ' + self.currEndPoint + \
+                '.c then up even with ' + self.currEndPoint + '.c\nright\n'
 
         elif cat == '+':
             self.pik += 'line from ' + startNode + '.c + (0.5*linerad,0) left 0.2*linerad then down hline*' + str(offset) + ' then right until even with ' + \
