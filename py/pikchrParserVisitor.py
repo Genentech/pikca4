@@ -1,5 +1,15 @@
 # Generated from ./py/ANTLRv4Parser.g4 by ANTLR 4.9.2
 from antlr4 import *
+if __name__ is not None and "." in __name__:
+    from .ANTLRv4Parser import ANTLRv4Parser
+    from .ANTLRv4ParserVisitor import ANTLRv4ParserVisitor
+else:
+    from ANTLRv4Parser import ANTLRv4Parser
+    from ANTLRv4ParserVisitor import ANTLRv4ParserVisitor
+
+# This class defines a complete generic visitor for a parse tree produced by ANTLRv4Parser.
+# Generated from ./py/ANTLRv4Parser.g4 by ANTLR 4.9.2
+
 from random import randrange
 import math
 
@@ -52,20 +62,15 @@ def closeLooseEnd(dictOfLooseEnd, pik):
     return pik, anchor
 
 
-if __name__ is not None and "." in __name__:
-    from .ANTLRv4Parser import ANTLRv4Parser
-else:
-    from ANTLRv4Parser import ANTLRv4Parser
-
 # This class defines a complete generic visitor for a parse tree produced by ANTLRv4Parser.
 # This class will overwrite the default vistor
 
 #############################################################
-############### All Alt List for branches ###################
+############### Alt List for branches ###################
 #############################################################
 
 
-class ANTLRv4ParserVisitor(ParseTreeVisitor):
+class pikchrParserVisitor(ParseTreeVisitor):
     def __init__(self):
         self.pikDict = {}
         self.splitNodeStack = []
@@ -513,6 +518,8 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
         print('atom', ctx.getText(),
               self.level[-1], self.altList, self.branchList)
         r = rand()
+        print(ctx.getText(), idGen('L', self.level[-1], r))
+
         # nid = idGen('C', self.level[-1], r)
 
         # self.pik += 'A' + str(r) + ': ' + 'arrow linerad \n'
@@ -526,6 +533,9 @@ class ANTLRv4ParserVisitor(ParseTreeVisitor):
             ': ' + 'box \"' + ctx.getText() + '\" fit\n'
         self.pik += idGen('L', self.level[-1], r) + ': ' + 'line linerad\n'
         self.currEndPoint = idGen('L', self.level[-1], r)
+        self.altList[-1][str(self.branchList[-1])] = self.currEndPoint
+        print('atom', ctx.getText(),
+              self.level[-1], self.altList, self.branchList)
         # self.altList[-1][str(int(list(self.altList[-1].keys())[-1]))
         #                  ] = self.currEndPoint
         # self.altList[-1][str(int(list(self.altList[-1].keys())[-1]))
