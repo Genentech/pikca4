@@ -1,3 +1,7 @@
+### Description
+
+It takes a configuration file written in a specific format used by an open source tool to generate a reader that understands machine-readable codes as specified in the provided configuration file, and converts that provided configuration file into another format where a second open source tool is able to render as a visualisation, hence helping coders to learn how to write those machine-readable codes.
+
 ### Goal
 
 Takes in any Antlr4 grammar file in, and generates Pikchr outputs.
