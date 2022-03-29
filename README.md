@@ -24,6 +24,8 @@ For instance:
 
 ### Usage
 
+CAUTION: lexer rules must be removed first. (Need fix this)
+
 ##### Step 0: Build Pikchr command line tool
 
 (See [Pikchr/Downloads](https://pikchr.org/home/doc/trunk/doc/download.md))
