@@ -1,3 +1,4 @@
 [submodule "grammar-a4"]
 	path = grammar-a4
 	url = git@github.com:bbgw/grammar-a4.git
+	shallow = true
