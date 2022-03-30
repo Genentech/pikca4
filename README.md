@@ -39,7 +39,7 @@ $ gcc -DPIKCHR_SHELL -o pikchr pikchr.c -lm # build the pikchr command-line tool
 ##### Step 1: Run pikca4
 
 ```bash
-python ./py/mainNew.py
+$ python main.py -h
 
 usage: g4 To pikchr [-h] [-g GRAMMAR] [-op OUTPUTPIKCHR] [-os OUTPUTSVG]
 
@@ -51,7 +51,8 @@ optional arguments:
                         pikchr file folder path
   -os OUTPUTSVG, --OutputSVG OUTPUTSVG
                         svg file folder path
-
+# Example: *.pikchr files will be generated in `generated` at the project root dir
+$ python src/main.py -g SQLiteParser.g4
 ```
 
 ##### Step 2: Run Pikchr command line tool

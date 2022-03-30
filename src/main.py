@@ -1,9 +1,12 @@
-
-
+#!/usr/env/bin python
+import os
+import sys
 import argparse
 import traceback
 
 from antlr4 import *
+EXTRA_MODULE_DIR = os.path.realpath("{}/../grammar-a4/py/".format(os.path.dirname(__file__)))
+sys.path.append(EXTRA_MODULE_DIR)
 from ANTLRv4Lexer import ANTLRv4Lexer
 # from ANTLRv4ParserVisitor import ANTLRv4ParserVisitor
 from ANTLRv4Parser import ANTLRv4Parser
@@ -61,7 +64,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '-g', "--grammar", help="path of the g4 grammer file", type=str)
     parser.add_argument("-op", "--OutputPikchr",
-                        help="pikchr file folder path", type=str, default='.')
+                        help="pikchr file folder path", type=str,
+                        default=os.path.realpath('{}/../generated'.format(os.path.dirname(__file__))))
     parser.add_argument("-os", "--OutputSVG",
                         help="svg file folder path", type=str)
     args = parser.parse_args()
