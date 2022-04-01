@@ -1,3 +1,7 @@
+### Description
+
+It takes a configuration file written in a specific format used by an open source tool to generate a reader that understands machine-readable codes as specified in the provided configuration file, and converts that provided configuration file into another format where a second open source tool is able to render as a visualisation, hence helping coders to learn how to write those machine-readable codes.
+
 ### Goal
 
 Takes in any Antlr4 grammar file in, and generates Pikchr outputs.
@@ -20,6 +24,8 @@ For instance:
 
 ### Usage
 
+CAUTION: lexer rules must be removed first. (Need fix this)
+
 ##### Step 0: Build Pikchr command line tool
 
 (See [Pikchr/Downloads](https://pikchr.org/home/doc/trunk/doc/download.md))
@@ -33,7 +39,7 @@ $ gcc -DPIKCHR_SHELL -o pikchr pikchr.c -lm # build the pikchr command-line tool
 ##### Step 1: Run pikca4
 
 ```bash
-python ./py/mainNew.py
+$ python main.py -h
 
 usage: g4 To pikchr [-h] [-g GRAMMAR] [-op OUTPUTPIKCHR] [-os OUTPUTSVG]
 
@@ -45,7 +51,8 @@ optional arguments:
                         pikchr file folder path
   -os OUTPUTSVG, --OutputSVG OUTPUTSVG
                         svg file folder path
-
+# Example: *.pikchr files will be generated in `generated` at the project root dir
+$ python src/main.py -g SQLiteParser.g4
 ```
 
 ##### Step 2: Run Pikchr command line tool

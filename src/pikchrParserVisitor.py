@@ -70,7 +70,7 @@ def closeLooseEnd(dictOfLooseEnd, pik):
 #############################################################
 
 
-class pikchrParserVisitor(ParseTreeVisitor):
+class pikchrParserVisitor(ANTLRv4ParserVisitor):
     def __init__(self):
         self.pikDict = {}
         self.splitNodeStack = []

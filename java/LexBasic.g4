@@ -1,1 +1,0 @@
-../grammars-v4/antlr/antlr4/LexBasic.g4
