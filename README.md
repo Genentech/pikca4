@@ -15,7 +15,7 @@ It's visually helpful and attractive for potential users to understand and use a
 
 For instance:
 
-<img src="/uploads/33706e4a49b4a6ea1961e7a1cd4d18de/Screen_Shot_2022-01-16_at_23.01.05.png" width="66%" height="66%">
+<img src="https://user-images.githubusercontent.com/1774905/161237606-6e8024c8-34f8-450d-abe0-c8c86f42dfef.png" width="66%" height="66%">
 
 ### Examples
 
